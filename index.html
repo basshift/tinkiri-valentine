@@ -28,7 +28,6 @@
             touch-action: manipulation;
         }
 
-        /* Matrix Rain Background */
         #matrix-bg {
             position: fixed;
             top: 0; left: 0;
@@ -37,7 +36,6 @@
             opacity: 0.5;
         }
 
-        /* Floating Hearts */
         .heart-particle {
             position: absolute;
             font-size: 1.8rem;
@@ -54,7 +52,6 @@
             100% { transform: translateY(-120vh) rotate(720deg); opacity: 0; }
         }
 
-        /* Modal Advertencia */
         #modal-advertencia {
             position: fixed;
             inset: 0;
@@ -99,7 +96,6 @@
             box-shadow: 0 0 20px var(--texto);
         }
 
-        /* Ventana Principal */
         #ventana-terminal {
             width: 94%;
             max-width: 860px;
@@ -125,7 +121,6 @@
         .parpadeo { animation: blink 1.2s step-end infinite; }
         @keyframes blink { 50% { opacity: 0.15; } }
 
-        /* Corazón ASCII más grande y bonito */
         #contenedor-ascii {
             text-align: center;
             margin: 15px 0 25px;
@@ -141,7 +136,6 @@
             text-shadow: 0 0 10px var(--amor), 0 0 20px var(--amor);
         }
 
-        /* Registros con scroll suave */
         #contenedor-registros {
             height: 140px;
             overflow-y: auto;
@@ -166,7 +160,6 @@
             text-shadow: 0 0 8px var(--alerta);
         }
 
-        /* Área de botones */
         #area-controles {
             position: relative;
             height: 320px;
@@ -210,7 +203,6 @@
             z-index: 20;
         }
 
-        /* Glitch en texto importante */
         .glitch-text {
             position: relative;
             display: inline-block;
@@ -251,7 +243,6 @@
             70%  { transform: translate(-2px, 2px); }
         }
 
-        /* Pantalla final */
         .pantalla-final {
             text-align: center;
             padding: 40px 20px;
@@ -351,17 +342,12 @@ function drawMatrix() {
 }
 setInterval(drawMatrix, 40);
 
-// Corazón ASCII con más frames (mejor latido)
+// Corazón ASCII
 const heartFrames = [
-    // Frame 1 - pequeño
     `   ♥♥   ♥♥   \n  ♥    ♥    ♥  \n ♥      ♥      ♥ \n ♥      ♥      ♥ \n  ♥    ♥    ♥  \n   ♥♥   ♥♥   \n    ♥♥♥♥    `,
-    // Frame 2 - mediano
     `  ♥♥♥ ♥♥♥  \n ♥   ♥   ♥ \n♥     ♥     ♥\n♥     ♥     ♥\n ♥   ♥   ♥ \n  ♥♥♥ ♥♥♥  \n   ♥♥♥♥♥   `,
-    // Frame 3 - grande
     ` ♥♥♥♥ ♥♥♥♥ \n♥    ♥    ♥\n♥     ♥     ♥\n ♥    ♥    ♥ \n  ♥  ♥  ♥  \n   ♥♥  ♥♥   \n    ♥♥♥♥    `,
-    // Frame 4 - muy grande
     `♥♥♥♥♥ ♥♥♥♥♥\n♥     ♥     ♥\n♥      ♥      ♥\n ♥     ♥     ♥ \n  ♥   ♥   ♥  \n   ♥ ♥ ♥ ♥   \n    ♥♥♥♥    `,
-    // Frame 5 (vuelve a 3)
     ` ♥♥♥♥ ♥♥♥♥ \n♥    ♥    ♥\n♥     ♥     ♥\n ♥    ♥    ♥ \n  ♥  ♥  ♥  \n   ♥♥  ♥♥   \n    ♥♥♥♥    `
 ];
 
@@ -372,7 +358,7 @@ setInterval(() => {
     frameIndex = (frameIndex + 1) % heartFrames.length;
 }, 220);
 
-// Partículas de corazones flotando
+// Partículas de corazones
 function createHeartParticle() {
     const heart = document.createElement('div');
     heart.className = 'heart-particle';
@@ -381,12 +367,11 @@ function createHeartParticle() {
     heart.style.animationDuration = (8 + Math.random() * 10) + 's';
     heart.style.animationDelay = Math.random() * 5 + 's';
     document.body.appendChild(heart);
-
     setTimeout(() => heart.remove(), 15000);
 }
 setInterval(createHeartParticle, 800);
 
-// Lógica del juego
+// Lógica principal
 const botonNo = document.getElementById('btn-no');
 const botonSi = document.getElementById('btn-si');
 const contenedorRegistros = document.getElementById('contenedor-registros');
@@ -396,7 +381,7 @@ const ventanaTerminal = document.getElementById('ventana-terminal');
 
 let intentosEscape = 0;
 let intentosClick = 0;
-const MAX_ESCAPE = 3; // ahora puede escapar 3 veces
+const MAX_ESCAPE = 3;
 const MAX_CLICKS = 6;
 
 const mensajesError = [
@@ -434,23 +419,18 @@ function intentarMover() {
 
 function manejarClickNo(e) {
     e.preventDefault();
-
     if (intentosEscape < MAX_ESCAPE) {
         intentarMover();
         return;
     }
-
     if (intentosClick < MAX_CLICKS) {
         agregarRegistro(mensajesError[intentosClick], true);
         intentosClick++;
-
-        // Efecto de "romperse"
         const scale = 1 - (intentosClick * 0.12);
         botonNo.style.transform = `translateY(-50%) scale(${scale})`;
         botonNo.style.opacity = 1 - (intentosClick * 0.14);
         botonNo.style.boxShadow = `0 0 ${20 + intentosClick*10}px var(--alerta)`;
     }
-
     if (intentosClick >= MAX_CLICKS) {
         rendirSistema();
     }
@@ -465,9 +445,7 @@ function rendirSistema() {
     botonNo.style.transform = 'translate(-50%, -50%) scale(1.3)';
     botonNo.style.opacity = '1';
     botonNo.style.boxShadow = '0 0 40px #ff71ce, 0 0 80px #05ffa1';
-
     agregarRegistro("> ¡EXPLOIT FINALIZADO! Opción 'NO' ha sido eliminada permanentemente.", true);
-
     botonNo.onclick = activarExito;
 }
 
@@ -481,21 +459,51 @@ function activarExito() {
                 <span style="font-size: 1.1rem;">Protocolo San Valentín 2026 - CONFIRMADO ♥</span>
             </p>
             <div style="border: 2px solid var(--amor); padding: 20px; margin: 30px auto; max-width: 500px; background: rgba(255,113,206,0.1);">
-                <p style="font-size: 1.4rem;">Te amo con todo mi amoi</p>
+                <p style="font-size: 1.4rem;">Te amo con todo mi código fuente</p>
                 <p style="font-size: 0.9rem; opacity: 0.8; margin-top: 15px;">
                     Cifrado: AES-256-AMOR | Firma digital: TinkiriNovio
                 </p>
             </div>
+
+            <button id="btn-whatsapp" class="boton-ciber" style="
+                margin-top: 35px;
+                background: linear-gradient(45deg, #25D366, #128C7E);
+                color: white;
+                padding: 18px 40px;
+                font-size: 1.3rem;
+                border: none;
+                border-radius: 50px;
+                box-shadow: 0 0 30px rgba(37, 211, 102, 0.6);
+                cursor: pointer;
+                transition: all 0.3s;
+            ">
+                Dime que respondiste que SÍ 💬
+            </button>
+
             <p style="font-size: 0.8rem; opacity: 0.7; margin-top: 40px;">
                 Reiniciando sistema en modo felicidad infinita...
             </p>
         </div>
     `;
 
-    // Más partículas al final
     for(let i = 0; i < 30; i++) {
         setTimeout(createHeartParticle, i * 120);
     }
+
+    setTimeout(() => {
+        const btnWhats = document.getElementById('btn-whatsapp');
+        if (btnWhats) {
+            btnWhats.addEventListener('click', () => {
+                const mensaje = encodeURIComponent(
+                    "¡SÍ acepté! 💖💖 TinkiriNovia dice SÍ con todo el corazón 😍\n" +
+                    "Protocolo San Valentín 2026 → 100% confirmado ♥\n\n" +
+                    "Te amo mucho mi amor ❤️"
+                );
+                const whatsappUrl = `https://wa.me/51906326220?text=${mensaje}`;
+                window.open(whatsappUrl, '_blank');
+            });
+        }
+    }, 300);
 }
 
 // Eventos
@@ -504,7 +512,7 @@ botonNo.addEventListener('touchstart', intentarMover);
 botonNo.addEventListener('click', manejarClickNo);
 botonSi.addEventListener('click', activarExito);
 
-// Iniciar partículas de inmediato
+// Partículas iniciales
 for(let i = 0; i < 12; i++) createHeartParticle();
 </script>
 </body>
