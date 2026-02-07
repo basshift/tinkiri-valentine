@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+    <title>Consola Tinkiri-Security v3.3 ★ San Valentín Hack</title>
+    <style>
+        :root {
+            --fondo: #000;
+            --terminal: #0a0e14;
+            --texto: #00ff9d;
+            --alerta: #ff2a6d;
+            --amor: #ff71ce;
+            --boton-no: #ff2a6d;
+            --boton-si: #05ffa1;
+            --glitch1: #ff00ff;
+            --glitch2: #00ffff;
+        }
+
+        * { box-sizing: border-box; margin:0; padding:0; }
+        body {
+            background: var(--fondo);
+            color: var(--texto);
+            font-family: 'Courier New', Courier, monospace;
+            min-height: 100vh;
+            overflow: hidden;
+            position: relative;
+            touch-action: manipulation;
+        }
+
+        /* Matrix Rain Background */
+        #matrix-bg {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            z-index: -2;
+            opacity: 0.5;
+        }
+
+        /* Floating Hearts */
+        .heart-particle {
+            position: absolute;
+            font-size: 1.8rem;
+            color: var(--amor);
+            pointer-events: none;
+            user-select: none;
+            animation: float 12s linear infinite;
+            opacity: 0;
+        }
+        @keyframes float {
+            0%   { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+            10%  { opacity: 0.9; }
+            90%  { opacity: 0.9; }
+            100% { transform: translateY(-120vh) rotate(720deg); opacity: 0; }
+        }
+
+        /* Modal Advertencia */
+        #modal-advertencia {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.92);
+            z-index: 1000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        .contenido-modal {
+            background: var(--terminal);
+            border: 3px solid var(--alerta);
+            padding: 40px 25px;
+            text-align: center;
+            max-width: 420px;
+            box-shadow: 0 0 40px var(--alerta), inset 0 0 20px rgba(255,42,109,0.3);
+            animation: glitchModal 4s infinite;
+        }
+        @keyframes glitchModal {
+            0%,100% { transform: translate(0); }
+            20% { transform: translate(-3px, 2px); }
+            40% { transform: translate(3px, -2px); }
+            60% { transform: translate(-2px, 3px); }
+            80% { transform: translate(2px, -1px); }
+        }
+
+        .boton-continuar {
+            margin-top: 25px;
+            background: transparent;
+            border: 2px solid var(--texto);
+            color: var(--texto);
+            padding: 12px 28px;
+            font-weight: bold;
+            cursor: pointer;
+            text-transform: uppercase;
+            transition: all 0.3s;
+        }
+        .boton-continuar:hover {
+            background: var(--texto);
+            color: #000;
+            box-shadow: 0 0 20px var(--texto);
+        }
+
+        /* Ventana Principal */
+        #ventana-terminal {
+            width: 94%;
+            max-width: 860px;
+            margin: 20px auto;
+            background: rgba(10,14,20,0.85);
+            border: 3px solid var(--texto);
+            box-shadow: 0 0 35px rgba(0,255,157,0.35), inset 0 0 25px rgba(0,255,157,0.15);
+            padding: 25px;
+            position: relative;
+            border-radius: 8px;
+            backdrop-filter: blur(4px);
+        }
+
+        .encabezado {
+            display: flex;
+            justify-content: space-between;
+            border-bottom: 2px solid var(--texto);
+            padding-bottom: 12px;
+            margin-bottom: 15px;
+            font-size: 1.1rem;
+            font-weight: bold;
+        }
+        .parpadeo { animation: blink 1.2s step-end infinite; }
+        @keyframes blink { 50% { opacity: 0.15; } }
+
+        /* Corazón ASCII más grande y bonito */
+        #contenedor-ascii {
+            text-align: center;
+            margin: 15px 0 25px;
+            height: 140px;
+            position: relative;
+        }
+        #arte-ascii {
+            color: var(--amor);
+            font-size: 1.1rem;
+            line-height: 1.1;
+            white-space: pre;
+            display: inline-block;
+            text-shadow: 0 0 10px var(--amor), 0 0 20px var(--amor);
+        }
+
+        /* Registros con scroll suave */
+        #contenedor-registros {
+            height: 140px;
+            overflow-y: auto;
+            font-size: 0.95rem;
+            margin: 15px 0;
+            padding: 10px;
+            border: 1px dashed #333;
+            background: rgba(0,0,0,0.4);
+            scrollbar-width: thin;
+            scrollbar-color: var(--texto) #111;
+        }
+        #contenedor-registros::-webkit-scrollbar {
+            width: 6px;
+        }
+        #contenedor-registros::-webkit-scrollbar-thumb {
+            background: var(--texto);
+        }
+        .entrada-registro { margin: 6px 0; }
+        .registro-alerta {
+            color: var(--alerta);
+            font-weight: bold;
+            text-shadow: 0 0 8px var(--alerta);
+        }
+
+        /* Área de botones */
+        #area-controles {
+            position: relative;
+            height: 320px;
+            margin-top: 20px;
+            border: 2px dashed #444;
+            background: rgba(0,0,0,0.3);
+            overflow: hidden;
+            border-radius: 6px;
+        }
+
+        .boton-ciber {
+            position: absolute;
+            padding: 16px 32px;
+            border: none;
+            font-family: inherit;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            text-transform: uppercase;
+            border-radius: 6px;
+            box-shadow: 4px 4px 0 rgba(0,0,0,0.7);
+            transition: all 0.25s;
+        }
+
+        #btn-si {
+            background: var(--boton-si);
+            color: #000;
+            left: 10%;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 10;
+        }
+        #btn-si:hover { transform: translateY(-50%) scale(1.12); box-shadow: 0 0 25px var(--boton-si); }
+
+        #btn-no {
+            background: var(--boton-no);
+            color: white;
+            right: 10%;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 20;
+        }
+
+        /* Glitch en texto importante */
+        .glitch-text {
+            position: relative;
+            display: inline-block;
+            color: var(--texto);
+            font-weight: bold;
+        }
+        .glitch-text::before,
+        .glitch-text::after {
+            content: attr(data-text);
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            opacity: 0.8;
+        }
+        .glitch-text::before { 
+            color: var(--glitch1); 
+            animation: glitch-anim 3s infinite;
+            clip-path: polygon(0 0, 100% 0, 100% 33%, 0 33%);
+        }
+        .glitch-text::after { 
+            color: var(--glitch2); 
+            animation: glitch-anim2 2.5s infinite;
+            clip-path: polygon(0 67%, 100% 67%, 100% 100%, 0 100%);
+        }
+
+        @keyframes glitch-anim {
+            0%,100% { transform: translate(0); }
+            20%  { transform: translate(-4px, 2px); }
+            40%  { transform: translate(4px, -2px); }
+            60%  { transform: translate(-3px, 3px); }
+            80%  { transform: translate(3px, -1px); }
+        }
+        @keyframes glitch-anim2 {
+            0%,100% { transform: translate(0); }
+            10%  { transform: translate(3px, -3px); }
+            30%  { transform: translate(-3px, 3px); }
+            50%  { transform: translate(2px, -2px); }
+            70%  { transform: translate(-2px, 2px); }
+        }
+
+        /* Pantalla final */
+        .pantalla-final {
+            text-align: center;
+            padding: 40px 20px;
+            animation: glitch 1.5s infinite;
+        }
+        @keyframes glitch {
+            0%,100% { transform: translate(0); }
+            20% { transform: translate(-2px, 2px); }
+            40% { transform: translate(2px, -2px); }
+            60% { transform: translate(-1px, 1px); }
+            80% { transform: translate(1px, -1px); }
+        }
+
+        .corazon-final {
+            font-size: 4rem;
+            margin: 20px 0;
+            display: block;
+            animation: latido 1.4s infinite;
+        }
+        @keyframes latido {
+            0%,100% { transform: scale(1); }
+            50%     { transform: scale(1.25); }
+        }
+    </style>
+</head>
+<body>
+
+<canvas id="matrix-bg"></canvas>
+
+<div id="modal-advertencia">
+    <div class="contenido-modal">
+        <h2 class="glitch-text" data-text="[!] ACCESO RESTRINGIDO 404-♥"> [!] ACCESO RESTRINGIDO 404-♥ </h2>
+        <p style="margin: 20px 0; font-size: 1.1rem;">Iniciando protocolo Tinkiri-Link v3.3<br><strong>Conexión romántica detectada</strong></p>
+        <button class="boton-continuar" onclick="cerrarModal()">ACCEDER AL CORAZÓN</button>
+    </div>
+</div>
+
+<div id="ventana-terminal">
+    <div class="encabezado">
+        <span>TINKIRI-CORE v3.3 - PROTOCOLO AMOR</span>
+        <span class="parpadeo">STATUS: ♥♥♥♥♥ PULSANDO</span>
+    </div>
+
+    <div id="contenedor-ascii">
+        <pre id="arte-ascii"></pre>
+    </div>
+
+    <div id="contenido">
+        <div id="contenedor-registros">
+            <p class="entrada-registro">> TinkiriNovio inicializando enlace cuántico romántico...</p>
+            <p class="entrada-registro">> Objetivo detectado: TinkiriNovia 💗</p>
+            <p class="entrada-registro glitch-text" data-text="> Estado: En espera de confirmación manual...">> Estado: En espera de confirmación manual...</p>
+        </div>
+
+        <div id="area-controles">
+            <button id="btn-si" class="boton-ciber">SÍ, ACEPTO 💖</button>
+            <button id="btn-no" class="boton-ciber">NO... 😢</button>
+        </div>
+    </div>
+</div>
+
+<script>
+// Matrix Rain
+const canvas = document.getElementById('matrix-bg');
+const ctx = canvas.getContext('2d');
+
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+
+window.addEventListener('resize', () => {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+});
+
+const chars = '01アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲンabcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%^&*';
+const fontSize = 16;
+const columns = canvas.width / fontSize;
+const drops = Array(Math.floor(columns)).fill(1);
+
+function drawMatrix() {
+    ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    ctx.fillStyle = '#00ff9d';
+    ctx.font = fontSize + 'px monospace';
+
+    drops.forEach((y, i) => {
+        const text = chars.charAt(Math.floor(Math.random() * chars.length));
+        const x = i * fontSize;
+        ctx.fillText(text, x, y * fontSize);
+
+        if (y * fontSize > canvas.height && Math.random() > 0.975) {
+            drops[i] = 0;
+        }
+        drops[i]++;
+    });
+}
+setInterval(drawMatrix, 40);
+
+// Corazón ASCII con más frames (mejor latido)
+const heartFrames = [
+    // Frame 1 - pequeño
+    `   ♥♥   ♥♥   \n  ♥    ♥    ♥  \n ♥      ♥      ♥ \n ♥      ♥      ♥ \n  ♥    ♥    ♥  \n   ♥♥   ♥♥   \n    ♥♥♥♥    `,
+    // Frame 2 - mediano
+    `  ♥♥♥ ♥♥♥  \n ♥   ♥   ♥ \n♥     ♥     ♥\n♥     ♥     ♥\n ♥   ♥   ♥ \n  ♥♥♥ ♥♥♥  \n   ♥♥♥♥♥   `,
+    // Frame 3 - grande
+    ` ♥♥♥♥ ♥♥♥♥ \n♥    ♥    ♥\n♥     ♥     ♥\n ♥    ♥    ♥ \n  ♥  ♥  ♥  \n   ♥♥  ♥♥   \n    ♥♥♥♥    `,
+    // Frame 4 - muy grande
+    `♥♥♥♥♥ ♥♥♥♥♥\n♥     ♥     ♥\n♥      ♥      ♥\n ♥     ♥     ♥ \n  ♥   ♥   ♥  \n   ♥ ♥ ♥ ♥   \n    ♥♥♥♥    `,
+    // Frame 5 (vuelve a 3)
+    ` ♥♥♥♥ ♥♥♥♥ \n♥    ♥    ♥\n♥     ♥     ♥\n ♥    ♥    ♥ \n  ♥  ♥  ♥  \n   ♥♥  ♥♥   \n    ♥♥♥♥    `
+];
+
+const arteAscii = document.getElementById('arte-ascii');
+let frameIndex = 0;
+setInterval(() => {
+    arteAscii.textContent = heartFrames[frameIndex];
+    frameIndex = (frameIndex + 1) % heartFrames.length;
+}, 220);
+
+// Partículas de corazones flotando
+function createHeartParticle() {
+    const heart = document.createElement('div');
+    heart.className = 'heart-particle';
+    heart.textContent = ['💗','💖','💕','❤️','🩷','💘'][Math.floor(Math.random()*6)];
+    heart.style.left = Math.random() * 100 + 'vw';
+    heart.style.animationDuration = (8 + Math.random() * 10) + 's';
+    heart.style.animationDelay = Math.random() * 5 + 's';
+    document.body.appendChild(heart);
+
+    setTimeout(() => heart.remove(), 15000);
+}
+setInterval(createHeartParticle, 800);
+
+// Lógica del juego
+const botonNo = document.getElementById('btn-no');
+const botonSi = document.getElementById('btn-si');
+const contenedorRegistros = document.getElementById('contenedor-registros');
+const modal = document.getElementById('modal-advertencia');
+const areaControles = document.getElementById('area-controles');
+const ventanaTerminal = document.getElementById('ventana-terminal');
+
+let intentosEscape = 0;
+let intentosClick = 0;
+const MAX_ESCAPE = 3; // ahora puede escapar 3 veces
+const MAX_CLICKS = 6;
+
+const mensajesError = [
+    "> Error 403: Acceso denegado... ¡pero tu corazón dice SÍ!",
+    "> Firewall romántico activado: Rechazo inválido.",
+    "> TinkiriNovio ha parcheado esa respuesta con amor.",
+    "> CRITICAL: Sistema colapsando por exceso de ternura...",
+    "> 404: Opción 'NO' no encontrada en el kernel del amor.",
+    "> ¡ALERTA! TinkiriNovia está en modo adoración total."
+];
+
+function cerrarModal() {
+    modal.style.display = 'none';
+    agregarRegistro("> Autenticación biométrica (corazón) completada.");
+}
+
+function agregarRegistro(texto, esAlerta = false) {
+    const p = document.createElement('p');
+    p.className = 'entrada-registro' + (esAlerta ? ' registro-alerta' : '');
+    p.innerHTML = texto;
+    contenedorRegistros.appendChild(p);
+    contenedorRegistros.scrollTop = contenedorRegistros.scrollHeight;
+}
+
+function intentarMover() {
+    if (intentosEscape < MAX_ESCAPE) {
+        const maxX = areaControles.clientWidth - botonNo.offsetWidth - 40;
+        const maxY = areaControles.clientHeight - botonNo.offsetHeight - 40;
+        botonNo.style.left = Math.max(20, Math.random() * maxX) + 'px';
+        botonNo.style.top = Math.max(20, Math.random() * maxY) + 'px';
+        intentosEscape++;
+        agregarRegistro(`> Intento de evasión detectado (${intentosEscape}/${MAX_ESCAPE})...`);
+    }
+}
+
+function manejarClickNo(e) {
+    e.preventDefault();
+
+    if (intentosEscape < MAX_ESCAPE) {
+        intentarMover();
+        return;
+    }
+
+    if (intentosClick < MAX_CLICKS) {
+        agregarRegistro(mensajesError[intentosClick], true);
+        intentosClick++;
+
+        // Efecto de "romperse"
+        const scale = 1 - (intentosClick * 0.12);
+        botonNo.style.transform = `translateY(-50%) scale(${scale})`;
+        botonNo.style.opacity = 1 - (intentosClick * 0.14);
+        botonNo.style.boxShadow = `0 0 ${20 + intentosClick*10}px var(--alerta)`;
+    }
+
+    if (intentosClick >= MAX_CLICKS) {
+        rendirSistema();
+    }
+}
+
+function rendirSistema() {
+    botonNo.innerHTML = "SÍ... ¡SISTEMA RENDIDO! 💖";
+    botonNo.style.background = 'linear-gradient(45deg, #ff71ce, #05ffa1)';
+    botonNo.style.color = "#000";
+    botonNo.style.left = '50%';
+    botonNo.style.top = '50%';
+    botonNo.style.transform = 'translate(-50%, -50%) scale(1.3)';
+    botonNo.style.opacity = '1';
+    botonNo.style.boxShadow = '0 0 40px #ff71ce, 0 0 80px #05ffa1';
+
+    agregarRegistro("> ¡EXPLOIT FINALIZADO! Opción 'NO' ha sido eliminada permanentemente.", true);
+
+    botonNo.onclick = activarExito;
+}
+
+function activarExito() {
+    ventanaTerminal.innerHTML = `
+        <div class="pantalla-final">
+            <div class="corazon-final">💖💖💖</div>
+            <h1 class="glitch-text" data-text="¡VINCULACIÓN EXITOSA!">¡VINCULACIÓN EXITOSA!</h1>
+            <p style="font-size: 1.6rem; margin: 25px 0; color: var(--amor);">
+                TinkiriNovio & TinkiriNovia<br>
+                <span style="font-size: 1.1rem;">Protocolo San Valentín 2026 - CONFIRMADO ♥</span>
+            </p>
+            <div style="border: 2px solid var(--amor); padding: 20px; margin: 30px auto; max-width: 500px; background: rgba(255,113,206,0.1);">
+                <p style="font-size: 1.4rem;">Te amo con todo mi código fuente</p>
+                <p style="font-size: 0.9rem; opacity: 0.8; margin-top: 15px;">
+                    Cifrado: AES-256-AMOR | Firma digital: TinkiriNovio
+                </p>
+            </div>
+            <p style="font-size: 0.8rem; opacity: 0.7; margin-top: 40px;">
+                Reiniciando sistema en modo felicidad infinita...
+            </p>
+        </div>
+    `;
+
+    // Más partículas al final
+    for(let i = 0; i < 30; i++) {
+        setTimeout(createHeartParticle, i * 120);
+    }
+}
+
+// Eventos
+botonNo.addEventListener('mouseover', intentarMover);
+botonNo.addEventListener('touchstart', intentarMover);
+botonNo.addEventListener('click', manejarClickNo);
+botonSi.addEventListener('click', activarExito);
+
+// Iniciar partículas de inmediato
+for(let i = 0; i < 12; i++) createHeartParticle();
+</script>
+</body>
+</html>
